@@ -1,0 +1,35 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    // Type checking
+    "strict": true,
+    "useDefineForClassFields": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
+
+    // JavaScript support
+    "allowJs": false,
+    "checkJs": false,
+    "jsx": "react",
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+
+    // Language and environment
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "target": "ESNext",
+    "lib": [
+      "ES2022" // By using ES2022 we get access to the `.cause` property on `Error` instances.
+    ],
+
+    // Skip type checking for node modules
+    "skipLibCheck": true
+  }
+}

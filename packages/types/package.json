@@ -1,5 +1,5 @@
 {
-  "name": "@octas/abi",
+  "name": "@octas/types",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.cjs",

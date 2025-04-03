@@ -1,5 +1,5 @@
 {
-  "name": "@octas/abi",
+  "name": "@octas/core",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.cjs",
@@ -16,5 +16,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.38.0",
+    "@noble/curves": "^1.8.1",
+    "@octas/errors": "workspace:*",
+    "@scure/bip39": "^1.5.4"
+  }
 }

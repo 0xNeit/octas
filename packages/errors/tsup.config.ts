@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  name: '@octas/abi',
+  name: '@octas/errors',
   entry: ['src/index.ts'],
   outDir: 'dist',
   format: ['esm', 'cjs'],

@@ -1,5 +1,5 @@
 {
-  "name": "@octas/abi",
+  "name": "@octas/errors",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.cjs",
@@ -16,5 +16,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@octas/abi": "workspace:*"
+  }
 }
