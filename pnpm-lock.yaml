@@ -27,7 +27,11 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(@types/node@22.14.0)
 
-  packages/abi: {}
+  packages/abi:
+    dependencies:
+      '@aptos-labs/ts-sdk':
+        specifier: ^1.38.0
+        version: 1.38.0(axios@1.8.4)(got@11.8.6)
 
   packages/core:
     dependencies:
@@ -37,9 +41,15 @@ importers:
       '@noble/curves':
         specifier: ^1.8.1
         version: 1.8.1
+      '@octas/abi':
+        specifier: workspace:*
+        version: link:../abi
       '@octas/errors':
         specifier: workspace:*
         version: link:../errors
+      '@octas/types':
+        specifier: workspace:*
+        version: link:../types
       '@scure/bip39':
         specifier: ^1.5.4
         version: 1.5.4

@@ -1,3 +1,11 @@
+import { EVENT_ABI, GUID_ABI, TABLE_ABI } from './abis';
+import { AGGREGATOR_ABI } from './abis/aggregator';
+import { COIN_ABI } from './abis/coin';
+import { OPTIONAL_AGGREGATOR_ABI } from './abis/optional_aggregator';
+
+/**
+ * Module ABI specification
+ */
 export type Abi = {
   address: string;
   name: string;
@@ -8,7 +16,7 @@ export type Abi = {
 
 export type AbiFunction = {
   name: string;
-  visibility: AbiFunctionVisibility;
+  visibility: 'public' | 'private' | 'friend';
   is_entry: boolean;
   is_view: boolean;
   generic_type_params: readonly AbiFunctionGenericTypeParam[];
@@ -17,14 +25,14 @@ export type AbiFunction = {
 };
 
 export type AbiFunctionGenericTypeParam = {
-  constraints: readonly AbiAbility[];
+  constraints: readonly string[];
 };
 
 export type AbiStruct = {
   name: string;
   is_native: boolean;
   is_event: boolean;
-  abilities: readonly AbiAbility[];
+  abilities: readonly string[];
   generic_type_params: readonly AbiFunctionGenericTypeParam[];
   fields: readonly AbiStructField[];
 };
@@ -34,21 +42,13 @@ export type AbiStructField = {
   type: string;
 };
 
-/**
- * Specifies the visibility levels for move functions, controlling access permissions.
- */
-export enum AbiFunctionVisibility {
-  PRIVATE = 'private',
-  PUBLIC = 'public',
-  FRIEND = 'friend',
-}
+export type AbiTable = Abi[];
 
-/**
- * Abilities related to moving items within the system.
- */
-export enum AbiAbility {
-  STORE = 'store',
-  DROP = 'drop',
-  KEY = 'key',
-  COPY = 'copy',
-}
+export type DefaultAbiTable = [
+  typeof COIN_ABI,
+  typeof EVENT_ABI,
+  typeof GUID_ABI,
+  typeof TABLE_ABI,
+  typeof OPTIONAL_AGGREGATOR_ABI,
+  typeof AGGREGATOR_ABI,
+];

@@ -16,5 +16,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.38.0"
+  }
 }

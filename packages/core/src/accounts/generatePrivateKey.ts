@@ -1,8 +1,8 @@
-import { ErrorType } from "@octas/errors";
-import { ed25519 } from "@noble/curves/ed25519";
-import { Ed25519PrivateKey } from "@aptos-labs/ts-sdk";
+import { ErrorType } from '@octas/errors';
+import { ed25519 } from '@noble/curves/ed25519';
+import { Ed25519PrivateKey } from '@aptos-labs/ts-sdk';
 
-export type GeneratePrivateKeyErrorType = ErrorType
+export type GeneratePrivateKeyErrorType = ErrorType;
 
 /**
  * @description Generates a random private key.

@@ -20,7 +20,9 @@
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.38.0",
     "@noble/curves": "^1.8.1",
+    "@octas/abi": "workspace:*",
     "@octas/errors": "workspace:*",
+    "@octas/types": "workspace:*",
     "@scure/bip39": "^1.5.4"
   }
 }

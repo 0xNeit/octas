@@ -1,7 +1,7 @@
 import type { ErrorType } from '@octas/errors';
 import { generateMnemonic as generateMnemonic_ } from '@scure/bip39';
 
-export type GenerateMnemonicErrorType = ErrorType
+export type GenerateMnemonicErrorType = ErrorType;
 
 /**
  * @description Generates a random mnemonic phrase with a given wordlist.
@@ -13,7 +13,7 @@ export type GenerateMnemonicErrorType = ErrorType
  */
 export function generateMnemonic(
   wordlist: string[],
-  strength?: number | undefined,
+  strength?: number | undefined
 ): string {
-  return generateMnemonic_(wordlist, strength)
+  return generateMnemonic_(wordlist, strength);
 }
