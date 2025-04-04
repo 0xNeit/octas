@@ -35,7 +35,7 @@ export const movement = /*#__PURE__*/ defineChain({
   modules: {
     aptosFramework: {
       address: '0x1',
-      blockCreated: 0,
+      blockCreated: 1,
     }
   }
 })

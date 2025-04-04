@@ -14,3 +14,4 @@ export {
   type GetChainModuleAddressErrorType,
   getChainModuleAddress,
 } from './chain/getChainModuleAddress'
+export { version } from './version'
