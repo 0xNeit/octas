@@ -1,12 +1,10 @@
-import { Account, Aptos } from '@aptos-labs/ts-sdk';
-import { Abi } from '@octas/abi';
-import { Address, Chain } from '@octas/types';
+import { Abi, AbiTable, DefaultAbiTable } from '@octas/abi';
+import { Address } from '@octas/types';
+import { OctaClient } from '../client';
 
 export type GetModuleParameters<
-  chain extends Chain | undefined = Chain | undefined,
-  account extends Account | undefined = Account | undefined,
   abi extends Abi = Abi,
-  client extends Aptos = Aptos,
+  client extends OctaClient<AbiTable> = OctaClient<DefaultAbiTable>,
   address extends Address = Address,
 > = {
   /** Module ABI */
@@ -15,8 +13,18 @@ export type GetModuleParameters<
   address: address;
   /** Aptos client */
   client: client;
-  /** Chain config */
-  chain: chain;
-  /** Account */
-  account: account;
 };
+
+export function getModule<
+  address extends Address,
+  const abi extends Abi,
+  const client extends OctaClient<AbiTable>,
+>({
+  abi,
+  address,
+  client: client_,
+}: GetModuleParameters<abi, client, address>) {
+  const module = client_.getMethods(abi, address);
+
+  return module;
+}

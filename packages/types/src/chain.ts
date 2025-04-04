@@ -30,6 +30,11 @@ export type Chain<
     [key: string]: ChainRpcUrls;
     default: ChainRpcUrls;
   };
+  /** Collection of indexer endpoints */
+  indexerUrls?: {
+    [key: string]: ChainIndexerUrls;
+    default: ChainIndexerUrls;
+  } | undefined;
   /** Flag for test networks */
   testnet?: boolean | undefined;
 } & ChainConfig<custom>;
@@ -85,4 +90,8 @@ type ChainNativeCurrency = {
 type ChainRpcUrls = {
   http: readonly string[];
   webSocket?: readonly string[] | undefined;
+};
+
+type ChainIndexerUrls = {
+  http: readonly string[];
 };

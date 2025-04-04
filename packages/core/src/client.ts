@@ -16,11 +16,18 @@ import {
   AbiSimulateClient,
   AbiTable,
   AbiViewClient,
+  DefaultAbiTable,
 } from '@octas/abi';
 import { EntryPayload, ViewPayload } from './types/client';
 import { createViewPayload } from './actions/createViewPayload';
 import { Address } from '@octas/types';
 import { createEntryPayload } from './actions/createEntryPayload';
+
+export function createOctaClient<TAbiTable extends AbiTable = DefaultAbiTable>(
+  aptos: Aptos
+): OctaClient<TAbiTable> {
+  return new OctaClient<TAbiTable>(aptos);
+}
 
 export class OctaClient<TAbiTable extends AbiTable> {
   private aptos: Aptos;

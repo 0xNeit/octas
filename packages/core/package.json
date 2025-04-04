@@ -2,8 +2,8 @@
   "name": "@octas/core",
   "version": "0.0.1",
   "description": "",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "files": [
@@ -23,6 +23,7 @@
     "@octas/abi": "workspace:*",
     "@octas/errors": "workspace:*",
     "@octas/types": "workspace:*",
+    "@octas/utils": "workspace:*",
     "@scure/bip39": "^1.5.4"
   }
 }

@@ -50,6 +50,9 @@ importers:
       '@octas/types':
         specifier: workspace:*
         version: link:../types
+      '@octas/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@scure/bip39':
         specifier: ^1.5.4
         version: 1.5.4
@@ -59,8 +62,20 @@ importers:
       '@octas/abi':
         specifier: workspace:*
         version: link:../abi
+      '@octas/types':
+        specifier: workspace:*
+        version: link:../types
 
   packages/types: {}
+
+  packages/utils:
+    dependencies:
+      '@octas/errors':
+        specifier: workspace:*
+        version: link:../errors
+      '@octas/types':
+        specifier: workspace:*
+        version: link:../types
 
 packages:
 
