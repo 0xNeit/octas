@@ -25,5 +25,8 @@
     "@octas/types": "workspace:*",
     "@octas/utils": "workspace:*",
     "@scure/bip39": "^1.5.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

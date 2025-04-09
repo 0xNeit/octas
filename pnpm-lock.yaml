@@ -69,6 +69,24 @@ importers:
         specifier: workspace:*
         version: link:../types
 
+  packages/octas:
+    dependencies:
+      '@octas/abi':
+        specifier: workspace:*
+        version: link:../abi
+      '@octas/core':
+        specifier: workspace:*
+        version: link:../core
+      '@octas/errors':
+        specifier: workspace:*
+        version: link:../errors
+      '@octas/types':
+        specifier: workspace:*
+        version: link:../types
+      '@octas/utils':
+        specifier: workspace:*
+        version: link:../utils
+
   packages/types: {}
 
   packages/utils:

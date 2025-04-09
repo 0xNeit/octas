@@ -19,5 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.38.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

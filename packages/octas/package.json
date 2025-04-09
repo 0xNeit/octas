@@ -1,5 +1,5 @@
 {
-  "name": "@octas/errors",
+  "name": "octas",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.js",
@@ -19,7 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "@octas/abi": "workspace:*",
-    "@octas/types": "workspace:*"
+    "@octas/core": "workspace:*",
+    "@octas/errors": "workspace:*",
+    "@octas/types": "workspace:*",
+    "@octas/utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
