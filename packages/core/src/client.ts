@@ -31,11 +31,9 @@ export function createOctaClient<TAbiTable extends AbiTable = DefaultAbiTable>(
 
 export class OctaClient<TAbiTable extends AbiTable> {
   private aptos: Aptos;
-  private readClient?: Aptos;
 
-  constructor(aptos: Aptos, readClient?: Aptos) {
+  constructor(aptos: Aptos) {
     this.aptos = aptos;
-    this.readClient = readClient;
   }
 
   public async view<TReturn extends MoveValue[]>(args: {
@@ -68,17 +66,10 @@ export class OctaClient<TAbiTable extends AbiTable> {
 
     let resolvedTxn: CommittedTransactionResponse;
 
-    if (this.readClient) {
-      resolvedTxn = await this.readClient.waitForTransaction({
-        transactionHash: transactionResponse.hash,
-        options: args.options ?? {},
-      });
-    } else {
-      resolvedTxn = await this.aptos.waitForTransaction({
-        transactionHash: transactionResponse.hash,
-        options: args.options ?? {},
-      });
-    }
+    resolvedTxn = await this.aptos.waitForTransaction({
+      transactionHash: transactionResponse.hash,
+      options: args.options ?? {},
+    });
 
     return resolvedTxn;
   }

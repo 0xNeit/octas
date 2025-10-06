@@ -4,17 +4,7 @@ import {
   CommittedTransactionResponse,
 } from '@aptos-labs/ts-sdk';
 import { Abi, AbiTable } from './abi';
-import {
-  ExtractGenericArgsType,
-  ExtractArgsType,
-  ViewFunctionName,
-  ExtractReturnType,
-  EntryFunctionName,
-  ExtractArgsTypeOmitSigner,
-  ResourceStructName,
-  ExtractStructGenericArgsType,
-  ExtractStructType,
-} from './utils';
+import { ViewFunctionName, ExtractGenericArgsType, ExtractArgsType, ExtractReturnType, EntryFunctionName, ExtractArgsTypeOmitSigner, ResourceStructName, ExtractStructGenericArgsType, ExtractStructType } from './extract';
 
 export type AbiViewClient<T extends Abi> = {
   [TFuncName in ViewFunctionName<T>]: (payload: {

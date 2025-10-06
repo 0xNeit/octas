@@ -11,7 +11,7 @@ export type GetModuleParameters<
   abi: abi;
   /** Module address */
   address: address;
-  /** Aptos client */
+  /** Octa client */
   client: client;
 };
 

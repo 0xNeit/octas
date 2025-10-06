@@ -1,6 +1,4 @@
-import { EVENT_ABI, GUID_ABI, TABLE_ABI } from './abis';
-import { AGGREGATOR_ABI } from './abis/aggregator';
-import { COIN_ABI } from './abis/coin';
+import { AGGREGATOR_ABI, COIN_ABI, EVENT_ABI, GUID_ABI, TABLE_ABI } from './abis';
 import { OPTIONAL_AGGREGATOR_ABI } from './abis/optional_aggregator';
 
 /**
