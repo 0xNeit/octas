@@ -1,3 +1,5 @@
+export { isAddress } from './address/isAddress';
+export { isAddressEqual } from './address/isAddressEqual';
 export {
   type AssertCurrentChainErrorType,
   type AssertCurrentChainParameters,

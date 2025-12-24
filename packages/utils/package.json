@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@aptos-labs/ts-sdk": "5.1.0",
     "@octas/errors": "workspace:*",
     "@octas/types": "workspace:*"
   },

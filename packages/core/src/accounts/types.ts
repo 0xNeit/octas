@@ -1,15 +1,39 @@
-import { Account as AptosAccount } from '@aptos-labs/ts-sdk';
-import { Address, OneOf } from '@octas/types';
+import {
+  AccountAuthenticator,
+  AnyRawTransaction,
+  HexInput,
+  Signature,
+} from '@aptos-labs/ts-sdk';
+import { Address, Hex, OneOf, Prettify } from '@octas/types';
+
+export type CustomSource = {
+  address: Address;
+  sign: (message: HexInput) => Signature;
+  signTransaction: (transaction: AnyRawTransaction) => Signature;
+  signWithAuthenticator: (message: HexInput) => AccountAuthenticator;
+  signTransactionWithAuthenticator: (
+    transaction: AnyRawTransaction
+  ) => AccountAuthenticator;
+};
+
+export type AccountSource = Address | CustomSource;
 
 export type ReadonlyAccount<address extends Address = Address> = {
   address: address;
   type: 'readonly';
 };
 
-export type LocalAccount<address extends Address = Address> = AptosAccount & {
-  address: address;
-  type: 'local';
-};
+export type LocalAccount<
+  source extends string = string,
+  address extends Address = Address,
+> = Prettify<
+  CustomSource & {
+    address: address;
+    publicKey: Hex;
+    source: source;
+    type: 'local';
+  }
+>;
 
 export type Account<address extends Address = Address> = OneOf<
   ReadonlyAccount<address> | LocalAccount<address>

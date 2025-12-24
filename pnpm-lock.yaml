@@ -119,6 +119,9 @@ importers:
 
   packages/utils:
     dependencies:
+      '@aptos-labs/ts-sdk':
+        specifier: 5.1.0
+        version: 5.1.0(got@11.8.6)
       '@octas/errors':
         specifier: workspace:*
         version: link:../errors
