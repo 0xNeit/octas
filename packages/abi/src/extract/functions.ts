@@ -1,7 +1,7 @@
-import { MoveFunctionId } from "@aptos-labs/ts-sdk";
-import { Abi } from "../abi";
-import { OmitSigner } from "../common";
-import { ConvertReturns, ConvertArgs, ConvertGenerics } from "../convert";
+import { MoveFunctionId } from '@aptos-labs/ts-sdk';
+import { Abi } from '../abi';
+import { OmitSigner } from '../common';
+import { ConvertReturns, ConvertArgs, ConvertGenerics } from '../convert';
 
 /**
  * All view function names in the ABI.
@@ -70,7 +70,7 @@ export type ExtractAbiFunctionNames<
   IsEntry extends boolean = false,
 > = T extends Abi
   ? Extract<
-      Function<T>, 
+      Function<T>,
       { is_view: IsEntry extends true ? false : true; is_entry: IsEntry }
     >['name']
   : T extends undefined

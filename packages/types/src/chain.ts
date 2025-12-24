@@ -31,10 +31,12 @@ export type Chain<
     default: ChainRpcUrls;
   };
   /** Collection of indexer endpoints */
-  indexerUrls?: {
-    [key: string]: ChainIndexerUrls;
-    default: ChainIndexerUrls;
-  } | undefined;
+  indexerUrls?:
+    | {
+        [key: string]: ChainIndexerUrls;
+        default: ChainIndexerUrls;
+      }
+    | undefined;
   /** Flag for test networks */
   testnet?: boolean | undefined;
 } & ChainConfig<custom>;

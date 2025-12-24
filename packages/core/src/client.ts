@@ -2,6 +2,8 @@ import {
   Account,
   AccountAddressInput,
   Aptos,
+  AptosConfig,
+  ClientConfig,
   CommittedTransactionResponse,
   LedgerVersionArg,
   MoveValue,
@@ -16,31 +18,31 @@ import {
   AbiSimulateClient,
   AbiTable,
   AbiViewClient,
-  DefaultAbiTable,
 } from '@octas/abi';
 import { EntryPayload, ViewPayload } from './types/client';
 import { createViewPayload } from './actions/createViewPayload';
-import { Address } from '@octas/types';
+import { Address, Chain } from '@octas/types';
 import { createEntryPayload } from './actions/createEntryPayload';
+import { chainIdToNetwork, getChainParams } from './utils/getChainParams';
 
-export function createOctaClient<TAbiTable extends AbiTable = DefaultAbiTable>(
-  aptos: Aptos
-): OctaClient<TAbiTable> {
-  return new OctaClient<TAbiTable>(aptos);
-}
-
-export class OctaClient<TAbiTable extends AbiTable> {
-  private aptos: Aptos;
-
-  constructor(aptos: Aptos) {
-    this.aptos = aptos;
+export class OctaClient<TAbiTable extends AbiTable> extends Aptos {
+  constructor(chain: Chain, clientConfig?: ClientConfig) {
+    const network = chainIdToNetwork(chain.id);
+    const params = getChainParams(chain);
+    const config = new AptosConfig({
+      network: network,
+      fullnode: params.fullnodeUrl,
+      indexer: params.indexerUrl,
+      ...clientConfig,
+    });
+    super(config);
   }
 
-  public async view<TReturn extends MoveValue[]>(args: {
+  public async viewWithReturn<TReturn extends MoveValue[]>(args: {
     payload: ViewPayload<TReturn>;
     options?: LedgerVersionArg;
   }): Promise<TReturn> {
-    const result = await this.aptos.view(args);
+    const result = await this.view(args);
     return result as TReturn;
   }
 
@@ -49,7 +51,7 @@ export class OctaClient<TAbiTable extends AbiTable> {
     payload: EntryPayload;
     options?: WaitForTransactionOptions;
   }): Promise<CommittedTransactionResponse> {
-    const transaction = await this.aptos.transaction.build.simple({
+    const transaction = await this.transaction.build.simple({
       sender: args.signer.accountAddress.toString(),
       data: {
         function: args.payload.function,
@@ -58,15 +60,16 @@ export class OctaClient<TAbiTable extends AbiTable> {
       },
     });
 
-    const transactionResponse =
-      await this.aptos.transaction.signAndSubmitTransaction({
+    const transactionResponse = await this.transaction.signAndSubmitTransaction(
+      {
         signer: args.signer,
         transaction,
-      });
+      }
+    );
 
     let resolvedTxn: CommittedTransactionResponse;
 
-    resolvedTxn = await this.aptos.waitForTransaction({
+    resolvedTxn = await this.waitForTransaction({
       transactionHash: transactionResponse.hash,
       options: args.options ?? {},
     });
@@ -79,7 +82,7 @@ export class OctaClient<TAbiTable extends AbiTable> {
     sender: AccountAddressInput;
     payload: EntryPayload;
   }): Promise<UserTransactionResponse> {
-    const transaction = await this.aptos.transaction.build.simple({
+    const transaction = await this.transaction.build.simple({
       sender: args.sender,
       data: {
         function: args.payload.function,
@@ -88,7 +91,7 @@ export class OctaClient<TAbiTable extends AbiTable> {
       },
     });
 
-    const response = await this.aptos.transaction.simulate.simple({
+    const response = await this.transaction.simulate.simple({
       signerPublicKey: args.publicKey,
       transaction,
     });
@@ -100,7 +103,7 @@ export class OctaClient<TAbiTable extends AbiTable> {
     address: string,
     moduleName: string
   ): Promise<T> {
-    const abi = await this.aptos.getAccountModule({
+    const abi = await this.getAccountModule({
       accountAddress: address,
       moduleName: moduleName,
     });
@@ -162,7 +165,7 @@ export class OctaClient<TAbiTable extends AbiTable> {
             functionArguments: args[0].functionArguments,
           });
 
-          const account: Account = args[0].account;
+          const account: Account = Account.generate();
           return this.simulateTransaction({
             publicKey: account.publicKey,
             sender: account.accountAddress.toString(),
@@ -182,7 +185,7 @@ export class OctaClient<TAbiTable extends AbiTable> {
 
           const account: AccountAddressInput = args[0].account;
 
-          return this.aptos.getAccountResource({
+          return this.getAccountResource({
             accountAddress: account,
             resourceType: `${address ?? abi.address}::${abi.name}::${structName}`,
             options: {

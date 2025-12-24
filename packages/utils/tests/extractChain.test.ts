@@ -1,14 +1,14 @@
-import { expect, expectTypeOf, test } from 'vitest'
+import { expect, expectTypeOf, test } from 'vitest';
 
-import * as chains from './fixtures/chains'
-import { extractChain } from '../src/chain/extractChain'
+import * as chains from './fixtures/chains';
+import { extractChain } from '../src/chain/extractChain';
 
 test('default', async () => {
   const mainnet = extractChain({
     chains: Object.values(chains),
     id: 1,
-  })
-  expectTypeOf(mainnet).toEqualTypeOf<typeof chains.aptos>()
+  });
+  expectTypeOf(mainnet).toEqualTypeOf<typeof chains.aptos>();
   expect(mainnet).toMatchInlineSnapshot(`
     {
       "blockExplorers": {
@@ -46,13 +46,13 @@ test('default', async () => {
         },
       },
     }
-  `)
+  `);
 
   const movement = extractChain({
     chains: Object.values(chains),
     id: 126,
-  })
-  expectTypeOf(movement).toEqualTypeOf<typeof chains.movement>()
+  });
+  expectTypeOf(movement).toEqualTypeOf<typeof chains.movement>();
   expect(movement).toMatchInlineSnapshot(`
     {
       "blockExplorers": {
@@ -97,5 +97,5 @@ test('default', async () => {
         },
       },
     }
-  `)
-})
+  `);
+});

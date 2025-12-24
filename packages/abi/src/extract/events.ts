@@ -1,5 +1,5 @@
-import { Abi } from "../abi";
-import { Struct } from "./structs";
+import { Abi } from '../abi';
+import { Struct } from './structs';
 
 type Event<T extends Abi> = Extract<Struct<T>, { is_event: true }>;
 

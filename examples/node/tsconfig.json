@@ -26,8 +26,7 @@
     "module": "NodeNext",
     "target": "ESNext",
     "lib": [
-      "ES2022", // By using ES2022 we get access to the `.cause` property on `Error` instances.
-      "DOM"
+      "ES2022" // By using ES2022 we get access to the `.cause` property on `Error` instances.
     ],
 
     // Skip type checking for node modules

@@ -1,5 +1,5 @@
-import { Abi, AbiTable } from "../abi";
-import { ConvertStructFieldType, ConvertGenerics } from "../convert";
+import { Abi, AbiTable } from '../abi';
+import { ConvertStructFieldType, ConvertGenerics } from '../convert';
 
 /**
  * Internal

@@ -1,3 +1,3 @@
-export * from './events'
-export * from './functions'
-export * from './structs'
+export * from './events';
+export * from './functions';
+export * from './structs';

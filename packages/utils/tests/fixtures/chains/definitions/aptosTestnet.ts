@@ -1,4 +1,4 @@
-import { defineChain } from '../../../../src/chain/defineChain'
+import { defineChain } from '../../../../src/chain/defineChain';
 
 export const aptosTestnet = /*#__PURE__*/ defineChain({
   id: 2,
@@ -8,25 +8,25 @@ export const aptosTestnet = /*#__PURE__*/ defineChain({
     default: {
       http: [
         'https://testnet.aptoslabs.com/v1',
-        'https://api.testnet.aptoslabs.com/v1'
-      ]
-    }
+        'https://api.testnet.aptoslabs.com/v1',
+      ],
+    },
   },
   indexerUrls: {
     default: {
-      http: ['https://api.testnet.aptoslabs.com/v1/graphql']
-    }
+      http: ['https://api.testnet.aptoslabs.com/v1/graphql'],
+    },
   },
   blockExplorers: {
     default: {
       name: 'Aptos Explorer',
       url: 'https://explorer.aptoslabs.com/?network=testnet',
-    }
+    },
   },
   modules: {
     aptosFramework: {
       address: '0x1',
       blockCreated: 1,
-    }
-  }
-})
+    },
+  },
+});

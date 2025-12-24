@@ -1,6 +1,6 @@
-import { expect, test } from 'vitest'
+import { expect, test } from 'vitest';
 
-import { defineChain } from '../src/chain/defineChain'
+import { defineChain } from '../src/chain/defineChain';
 
 test('default', () => {
   expect(
@@ -12,7 +12,7 @@ test('default', () => {
       rpcUrls: {
         default: { http: ['https://mainnet.movementnetwork.xyz/v1'] },
       },
-    }),
+    })
   ).toMatchInlineSnapshot(`
       {
         "id": 126,
@@ -31,5 +31,5 @@ test('default', () => {
           },
         },
       }
-    `)
-})
+    `);
+});

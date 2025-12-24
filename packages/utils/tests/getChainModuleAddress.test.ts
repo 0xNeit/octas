@@ -1,30 +1,30 @@
-import { expect, test } from 'vitest'
+import { expect, test } from 'vitest';
 
-import { aptos, movement, aptosTestnet } from './fixtures/chains'
+import { aptos, movement, aptosTestnet } from './fixtures/chains';
 
-import { getChainModuleAddress } from '../src/chain/getChainModuleAddress'
-import { version } from '../src/version'
+import { getChainModuleAddress } from '../src/chain/getChainModuleAddress';
+import { version } from '../src/version';
 
 test('default', () => {
   expect(
     getChainModuleAddress({
       chain: aptos,
       module: 'aptosFramework',
-    }),
-  ).toMatchInlineSnapshot('"0x1"')
+    })
+  ).toMatchInlineSnapshot('"0x1"');
   expect(
     getChainModuleAddress({
       chain: movement,
       module: 'aptosFramework',
-    }),
-  ).toMatchInlineSnapshot('"0x1"')
+    })
+  ).toMatchInlineSnapshot('"0x1"');
   expect(
     getChainModuleAddress({
       chain: aptosTestnet,
       module: 'aptosFramework',
-    }),
-  ).toMatchInlineSnapshot('"0x1"')
-})
+    })
+  ).toMatchInlineSnapshot('"0x1"');
+});
 
 test('no contract', () => {
   expect(() =>
@@ -34,7 +34,7 @@ test('no contract', () => {
         modules: {},
       },
       module: 'aptosFramework',
-    }),
+    })
   ).toThrowErrorMatchingInlineSnapshot(`
     [ChainDoesNotSupportModule: Chain "Aptos" does not support module "aptosFramework".
 
@@ -42,8 +42,8 @@ test('no contract', () => {
     - The chain does not have the module "aptosFramework" configured.
 
     Version: octas@${version}]
-  `)
-})
+  `);
+});
 
 test('block number is less than created block number', () => {
   expect(() =>
@@ -59,7 +59,7 @@ test('block number is less than created block number', () => {
         },
       },
       module: 'aptosFramework',
-    }),
+    })
   ).toThrowErrorMatchingInlineSnapshot(`
     [ChainDoesNotSupportModule: Chain "Aptos" does not support module "aptosFramework".
 
@@ -67,5 +67,5 @@ test('block number is less than created block number', () => {
     - The module "aptosFramework" was not deployed until block 123456789 (current block 69420).
 
     Version: octas@${version}]
-  `)
-})
+  `);
+});

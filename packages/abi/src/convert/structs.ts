@@ -1,7 +1,13 @@
-import { AbiTable } from "../abi";
-import { UnknownStruct, OmitInner } from "../common";
-import { MoveNonStructTypes, MoveObject, MovePrimitive, MovePrimitiveMap, MoveVector } from "../types";
-import { ResourceStructName, ExtractStructType } from "../extract";
+import { AbiTable } from '../abi';
+import { UnknownStruct, OmitInner } from '../common';
+import {
+  MoveNonStructTypes,
+  MoveObject,
+  MovePrimitive,
+  MovePrimitiveMap,
+  MoveVector,
+} from '../types';
+import { ResourceStructName, ExtractStructType } from '../extract';
 
 // Convert a struct field Move type to a TypeScript type
 export type ConvertStructFieldType<

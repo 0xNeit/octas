@@ -1,5 +1,11 @@
-import { AnyNumber, UnknownStruct } from "../common";
-import { MoveObject, MoveOption, MovePrimitive, MovePrimitiveMap, MoveVector } from "../types";
+import { AnyNumber, UnknownStruct } from '../common';
+import {
+  MoveObject,
+  MoveOption,
+  MovePrimitive,
+  MovePrimitiveMap,
+  MoveVector,
+} from '../types';
 
 /**
  * Convert an array of input arguments type.

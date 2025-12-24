@@ -1,7 +1,7 @@
 /**
  * Types from Move language
  */
-import { AnyNumber } from "./common";
+import { AnyNumber } from './common';
 
 export type MoveNonStructTypes =
   | MovePrimitive

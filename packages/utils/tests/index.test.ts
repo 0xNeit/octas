@@ -1,6 +1,6 @@
-import { expect, test } from 'vitest'
+import { expect, test } from 'vitest';
 
-import * as exports from '../src/index'
+import * as exports from '../src/index';
 
 test('exports', () => {
   expect(Object.keys(exports)).toMatchInlineSnapshot(`
@@ -11,5 +11,5 @@ test('exports', () => {
       "getChainModuleAddress",
       "version",
     ]
-  `)
-})
+  `);
+});
