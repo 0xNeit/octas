@@ -13,8 +13,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest --run",
-    "publish": "pnpm build && pnpm publish"
+    "test": "vitest --run"
   },
   "keywords": [],
   "author": "",

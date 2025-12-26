@@ -12,8 +12,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "typecheck": "tsc --noEmit",
-    "publish": "pnpm build && pnpm publish"
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
