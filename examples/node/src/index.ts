@@ -1,4 +1,10 @@
-import { COIN_ABI, aptos, aptosAccountToAccountSource, createClient, toAccount } from 'octas';
+import {
+  COIN_ABI,
+  aptos,
+  aptosAccountToAccountSource,
+  createClient,
+  toAccount,
+} from 'octas';
 import { Account as AptosAccount } from '@aptos-labs/ts-sdk';
 
 export async function main() {

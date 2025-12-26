@@ -41,12 +41,14 @@ export function toAccount<accountSource extends AccountSource>(
   } as GetAccountReturnType<accountSource>;
 }
 
-export function aptosAccountToAccountSource(account: AptosAccount): AccountSource {
+export function aptosAccountToAccountSource(
+  account: AptosAccount
+): AccountSource {
   return {
     address: account.accountAddress.toStringLong(),
     sign: account.sign,
     signTransaction: account.signTransaction,
     signWithAuthenticator: account.signWithAuthenticator,
     signTransactionWithAuthenticator: account.signTransactionWithAuthenticator,
-  }
+  };
 }
