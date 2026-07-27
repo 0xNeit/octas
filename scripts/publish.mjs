@@ -7,7 +7,7 @@
  *   node scripts/publish.mjs --skip-build      # assume dist/ already fresh
  *   node scripts/publish.mjs --skip-checks     # skip git-clean + on-main checks
  *   node scripts/publish.mjs --allow-downgrade # permit publishing an older version than the registry
- *   node scripts/publish.mjs --otp=123456      # supply the 2FA code up front instead of being asked
+ *   node scripts/publish.mjs --otp=123456      # pass OTP to each publish (good for ~5min)
  *   node scripts/publish.mjs --tag             # also create v<core-version> git tag
  *   node scripts/publish.mjs --tag --push-tag  # …and push the tag to origin
  *   node scripts/publish.mjs --yes             # skip the interactive confirmation
@@ -36,10 +36,7 @@ const ALLOW_DOWNGRADE = argSet.has('--allow-downgrade');
 const MAKE_TAG = argSet.has('--tag');
 const PUSH_TAG = argSet.has('--push-tag');
 const SKIP_CONFIRM = argSet.has('--yes') || argSet.has('-y');
-// Mutable: seeded from `--otp=` when given, otherwise filled in by a single
-// interactive prompt before the publish loop, and refreshed in place if a
-// code expires partway through a run. See `ensureOtp`.
-let otp = (() => {
+const OTP = (() => {
   const arg = args.find((a) => a.startsWith('--otp='));
   return arg ? arg.slice('--otp='.length) : null;
 })();
@@ -314,10 +311,14 @@ function preflight() {
     process.exit(1);
   }
 
-  if (otp !== null) {
-    success(`OTP supplied via --otp= (will be reused for every publish)`);
+  if (OTP !== null) {
+    success(`OTP supplied (will be passed to each npm publish)`);
   } else {
-    log(dim('  No --otp= passed; you will be asked once before publishing if 2FA is required.'));
+    log(
+      dim(
+        '  No --otp= passed; npm will prompt interactively per package if 2FA is required for publish.',
+      ),
+    );
   }
 }
 
@@ -441,51 +442,18 @@ function plan(packages) {
   return { rows, toPublish, skipped };
 }
 
-function ask(question) {
+async function confirm(message) {
+  if (SKIP_CONFIRM || DRY_RUN) return true;
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise((res) => {
-    rl.question(question, (ans) => {
+    rl.question(`${message} [y/N] `, (ans) => {
       rl.close();
-      res(ans.trim());
+      res(ans.trim().toLowerCase().startsWith('y'));
     });
   });
 }
 
-async function confirm(message) {
-  if (SKIP_CONFIRM || DRY_RUN) return true;
-  return (await ask(`${message} [y/N] `)).toLowerCase().startsWith('y');
-}
-
-/**
- * npm wants a fresh OTP for *every* `npm publish` when the account or the
- * package is set to 2FA-on-publish, so letting npm prompt per package turns
- * a six-package release into six code entries — and the later ones start
- * failing as the TOTP window rolls over mid-run. Collect one code here and
- * reuse it for the whole loop: npm honours a given OTP for a short replay
- * window, which comfortably covers a run this size.
- *
- * Skipped when `--otp=` already supplied a code, and when stdin is not a
- * TTY — CI authenticates with an automation or granular access token via
- * NPM_TOKEN, which bypasses 2FA entirely, and prompting there would hang
- * the job. An empty answer means "no 2FA on this account", not "retry".
- */
-async function ensureOtp() {
-  if (otp !== null || DRY_RUN) return;
-  if (!process.stdin.isTTY) {
-    log(dim('  Non-interactive shell — skipping OTP prompt (expecting NPM_TOKEN auth).'));
-    return;
-  }
-  const answer = await ask('npm one-time password (press Enter if 2FA is not required): ');
-  otp = answer === '' ? null : answer;
-  if (otp !== null) success('OTP captured — reusing it for every package in this run.');
-}
-
-/** npm signals a missing/expired/incorrect 2FA code with EOTP. */
-function isOtpFailure(output) {
-  return /EOTP|one-time pass(word)?|otp code/i.test(output);
-}
-
-async function publishOne(pkg, versionMap) {
+function publishOne(pkg, versionMap) {
   const label = `${pkg.name}@${pkg.version}`;
   if (DRY_RUN) {
     log(`  ${dim('[dry-run]')} would publish ${label}`);
@@ -511,18 +479,12 @@ async function publishOne(pkg, versionMap) {
     if (needsRewrite) {
       writeFileSync(pkg.pkgPath, `${JSON.stringify(rewritten, null, 2)}\n`, 'utf8');
     }
-    r = runNpmPublish(pkg);
-    // A long run can outlive the OTP that started it. Rather than failing the
-    // remaining packages one by one, take a fresh code and retry this package
-    // once; the new code then carries the rest of the loop.
-    if (r.status !== 0 && isOtpFailure(r.output) && process.stdin.isTTY) {
-      warn(`npm rejected the 2FA code for ${label} — it has most likely expired.`);
-      const answer = await ask('Fresh npm one-time password (Enter to give up): ');
-      if (answer !== '') {
-        otp = answer;
-        r = runNpmPublish(pkg);
-      }
-    }
+    const npmArgs = ['publish', '--access', 'public'];
+    if (OTP !== null) npmArgs.push(`--otp=${OTP}`);
+    r = spawnSync('npm', npmArgs, {
+      cwd: pkg.dir,
+      stdio: 'inherit',
+    });
   } finally {
     if (needsRewrite) {
       writeFileSync(pkg.pkgPath, originalContent, 'utf8');
@@ -535,25 +497,6 @@ async function publishOne(pkg, versionMap) {
   }
   fail(`Failed to publish ${label} (exit ${r.status})`);
   return { ok: false, pkg, skipped: false };
-}
-
-/**
- * Run `npm publish` in a package directory, forwarding the current OTP.
- * Output is piped rather than inherited so the caller can inspect it for
- * an EOTP signal, then written straight through so the run still reads
- * like a normal npm publish.
- */
-function runNpmPublish(pkg) {
-  const npmArgs = ['publish', '--access', 'public'];
-  if (otp !== null) npmArgs.push(`--otp=${otp}`);
-  const r = spawnSync('npm', npmArgs, {
-    cwd: pkg.dir,
-    encoding: 'utf8',
-    stdio: ['inherit', 'pipe', 'pipe'],
-  });
-  if (r.stdout) process.stdout.write(r.stdout);
-  if (r.stderr) process.stderr.write(r.stderr);
-  return { status: r.status, output: `${r.stdout ?? ''}${r.stderr ?? ''}` };
 }
 
 function maybeTag(packages) {
@@ -616,17 +559,9 @@ async function main() {
     process.exit(1);
   }
 
-  // Asked after the confirmation, so aborting the run never costs a code.
-  await ensureOtp();
-
   header('Publishing');
   const versionMap = buildVersionMap();
-  // Sequential by necessity: the order is dependency-first, each publish
-  // temporarily rewrites a manifest on disk, and a re-prompt needs stdin.
-  const results = [];
-  for (const pkg of toPublish) {
-    results.push(await publishOne(pkg, versionMap));
-  }
+  const results = toPublish.map((pkg) => publishOne(pkg, versionMap));
 
   const failures = results.filter((r) => !r.ok);
   log('');
