@@ -2,6 +2,7 @@ export * from './accounts';
 export * from './actions';
 export * from './chains';
 export * from './connectors/createConnector';
+export * from './constants/number';
 export * from './types';
 export * from './utils';
 export * from './client';
